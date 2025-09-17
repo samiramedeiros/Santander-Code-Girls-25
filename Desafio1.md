@@ -1,4 +1,4 @@
-# 🚀 Desafio DIO - Santander Code Girls
+# 🚀 Desafio 1 DIO - Santander Code Girls
 
 Neste desafio, criamos uma **arquitetura no Draw.io** para consolidar o conhecimento em **gerenciamento de instâncias EC2 na AWS**.
 
