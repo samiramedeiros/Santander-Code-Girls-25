@@ -112,6 +112,8 @@ Olá! Eu sou **Samira Medeiros**, graduada em **Análise e Desenvolvimento de Si
 
 <br> <!-- Quebra de linha aqui -->
 
+---
+
 ### Contato
 - E-mail: [samiramedeirosc@gmail.com](mailto:samiramedeirosc@gmail.com)
 - LinkedIn: [Samira Medeiros](https://www.linkedin.com/in/samiramedeirosc/)  
