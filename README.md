@@ -115,4 +115,10 @@ Olá! Eu sou **Samira Medeiros**, graduada em **Análise e Desenvolvimento de Si
 ### Contato
 - E-mail: [samiramedeirosc@gmail.com](mailto:samiramedeirosc@gmail.com)
 - LinkedIn: [Samira Medeiros](https://www.linkedin.com/in/samiramedeirosc/)  
-- GitHub: [samiramedeiros](https://github.com/samiramedeiros)  
+- GitHub: [samiramedeiros](https://github.com/samiramedeiros)
+
+---
+
+### Licença
+Este projeto está sob a **licença MIT** – veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
