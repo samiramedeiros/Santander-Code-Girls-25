@@ -1,4 +1,4 @@
-<img width="1584" height="396" alt="Inserir um título" src="https://github.com/user-attachments/assets/d6f303b3-a5ca-46a5-ac9a-c3264ed68f15"/>
+<img width="1584" height="396" alt="Inserir um título" src="https://github.com/user-attachments/assets/d6f303b3-a5ca-46a5-ac9a-c3264ed68f15"/> 
 
 ### Sobre mim
 Olá! Eu sou **Samira Medeiros**, graduada em **Análise e Desenvolvimento de Sistemas**. Atualmente, estou me aprofundando em Engenharia de Dados.
