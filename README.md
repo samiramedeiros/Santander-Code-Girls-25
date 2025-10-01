@@ -25,9 +25,8 @@ Olá! Eu sou **Samira Medeiros**, graduada em **Análise e Desenvolvimento de Si
 
 ### Explore as Seções
 - `/modules/` — Cursos organizados por módulos  
-- `/projects/` — Desafios de projetos que desenvolvi  
-- `/certificates/` — Meus certificados de cada Módulo Concluído 
-- `/assets/` — Armazena imagens e ícones usados no README e na documentação
+- `/projects/` — Desafios de projetos
+- `/certificates/` — Meus certificados
 
 ---
 
