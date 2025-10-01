@@ -1,7 +1,7 @@
 <img width="1584" height="396" alt="Inserir um título" src="https://github.com/user-attachments/assets/d6f303b3-a5ca-46a5-ac9a-c3264ed68f15"/> 
 
 ### Sobre mim
-Olá! Eu sou **Samira Medeiros**, graduada em **Análise e Desenvolvimento de Sistemas**. Atualmente, estou me aprofundando em Engenharia de Dados.
+Olá! Eu sou **Samira Medeiros**, graduada em **Análise e Desenvolvimento de Sistemas**. Atualmente, estou me aprofundando em Engenharia de Dados e AWS Foundations.
 <p>Neste repositório, você vai acompanhar um pouco da minha jornada no  <a href="https://web.dio.me/track/santander-code-girls-2025" target="_blank">Bootcamp Santander CODE GIRLS 2025</a>:
 
 ---
@@ -24,7 +24,7 @@ Olá! Eu sou **Samira Medeiros**, graduada em **Análise e Desenvolvimento de Si
 ---
 
 ### Explore as Seções
-- `/modules/` — Cursos organizados por módulos  
+- `/modules/` — Curso organizado por módulos  
 - `/projects/` — Desafios de projetos
 - `/certificates/` — Meus certificados
 
