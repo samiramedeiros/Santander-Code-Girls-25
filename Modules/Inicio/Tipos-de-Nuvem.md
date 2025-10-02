@@ -23,6 +23,6 @@
 
 <p align="center">
   <a href="https://github.com/samiramedeiros/Santander-Code-Girls-25/blob/main/Modules/Inicio.md">
-    <img src="https://readme-typing-svg.herokuapp.com?color=FFB6C1&size=30&center=true&vCenter=true&width=600&lines=✨+Voltar+ao+Inicio+✨&repeat=true" alt="Voltar ao Inicio" />
+    <img src="https://readme-typing-svg.herokuapp.com?color=FFB6C1&size=30&center=true&vCenter=true&width=600&lines=✨+Clique+Aqui+para+Voltar+ao+Inicio+✨&repeat=true" alt="Clique Aqui para Voltar ao Inicio" />
   </a>
 </p>
