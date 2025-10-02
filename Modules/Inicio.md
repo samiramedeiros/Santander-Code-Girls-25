@@ -10,5 +10,5 @@
 
 <br>
 
-- ☁️ [**Tipos de Nuvem**](../modules/Inicio/TiposDeNuvem.md) - Conheça os diferentes tipos de nuvem: pública, privada e híbrida.
-- 💰 [**Modelos de Negócio**](../modules/Inicio/ModelosDeNegocio.md) - Conheça os diferentes modelos de negócio na nuvem: IaaS, PaaS e SaaS.
+- ☁️ [**Tipos de Nuvem**](../Modules/Inicio/TiposDeNuvem.md) - Conheça os diferentes tipos de nuvem: pública, privada e híbrida.
+- 💰 [**Modelos de Negócio**](../Modules/Inicio/ModelosDeNegocio.md) - Conheça os diferentes modelos de negócio na nuvem: IaaS, PaaS e SaaS.
