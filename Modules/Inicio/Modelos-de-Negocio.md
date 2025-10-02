@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?color=FFB6C1&size=30&center=true&vCenter=true&width=600&lines=✨+Despesas+vs+Investimentos+✨&repeat=true" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?color=FFB6C1&size=30&center=true&vCenter=true&width=600&lines=✨+Modelos+de+Negócio+✨&repeat=true" alt="Typing SVG" />
 </div>
 
 
