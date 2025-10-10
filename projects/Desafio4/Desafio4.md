@@ -51,6 +51,8 @@ Vá em:
 - Logo abaixo, selecione:
     <p>✅ “Fazer upload de um arquivo de modelo”</p>
 
+    [**Clique Aqui e Copie este Template**](template-banco.yaml/)
+
 - Clique em "Escolher Arquivo" e selecione o seu arquivo .yaml ou .json.
 
     <img width="1011" height="280" alt="2" src="https://github.com/user-attachments/assets/fd9cc269-3fb1-47f6-9074-b3730a358c01" />
