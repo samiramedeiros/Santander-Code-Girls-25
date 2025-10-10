@@ -1,0 +1,223 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: |
+  Sistema automatizado de cobrança por e-mail usando Lambda, Step Functions, DynamoDB, SES e EventBridge.
+
+Parameters:
+  EmailOrigem:
+    Type: String
+    Description: Endereço de e-mail verificado no SES para envio das mensagens
+    Default: samiramedeirosc@gmail.com # Movido para a propriedade Default
+
+Resources:
+
+  ### DynamoDB ###
+  ClientesFaturasTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ClientesFaturas
+      AttributeDefinitions:
+        - AttributeName: clienteId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: clienteId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  ### IAM Role para Lambda ###
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: LambdaBillingExecutionRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              # Permissões SES
+              - Effect: Allow
+                Action:
+                  - ses:SendEmail
+                  - ses:SendRawEmail
+                Resource: "*" # Em produção, restrinja isso ao ARN da identidade verificada
+              # Permissões DynamoDB
+              - Effect: Allow
+                Action:
+                  - dynamodb:Scan
+                  - dynamodb:GetItem
+                Resource: !GetAtt ClientesFaturasTable.Arn
+              # Permissões CloudWatch Logs (Básico)
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+
+  ### Lambda Function (Com Variável de Ambiente Corrigida) ###
+  BillingEmailLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: EnviarCobrancaEmail
+      Runtime: python3.12
+      Handler: index.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Timeout: 15
+      # 🔑 CORREÇÃO: Injeta o EmailOrigem como variável de ambiente
+      Environment:
+        Variables:
+          EMAIL_ORIGEM: !Ref EmailOrigem
+      Code:
+        ZipFile: |
+          import boto3
+          import datetime
+          import os # Necessário para ler variáveis de ambiente
+
+          # 🔑 CORREÇÃO: Lê a variável de ambiente injetada pelo CloudFormation
+          EMAIL_SOURCE = os.environ.get('EMAIL_ORIGEM')
+
+          def lambda_handler(event, context):
+              dynamodb = boto3.resource('dynamodb')
+              table = dynamodb.Table('ClientesFaturas')
+              ses = boto3.client('ses')
+
+              hoje = datetime.date.today()
+              vencimento = hoje.replace(day=20)
+
+              # Buscar todos os clientes
+              response = table.scan()
+              clientes = response.get('Items', [])
+
+              for cliente in clientes:
+                  nome = cliente.get('nome', 'Cliente')
+                  email = cliente.get('email')
+                  valor = cliente.get('valorFatura', 'R$ 0,00')
+
+                  corpo = f"""
+                  <html>
+                      <body>
+                          <p>Olá <strong>{nome}</strong>,</p>
+                          <p>Sua fatura vence em <strong>{vencimento.strftime('%d/%m/%Y')}</strong>.</p>
+                          <p><strong>Valor:</strong> {valor}</p>
+                          <br/>
+                          <p>Atenciosamente,<br/>Equipe de Cobrança</p>
+                      </body>
+                  </html>
+                  """
+                  
+                  # 🔑 CORREÇÃO: Usa EMAIL_SOURCE da variável de ambiente
+                  ses.send_email(
+                      Source=EMAIL_SOURCE,
+                      Destination={'ToAddresses': [email]},
+                      Message={
+                          'Subject': {'Data': 'Sua fatura está disponível'},
+                          'Body': {
+                              'Html': {'Data': corpo}
+                          }
+                      }
+                  )
+
+              return {"status": "emails_enviados", "total": len(clientes)}
+
+  ### IAM Role para Step Functions ###
+  StepFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: StepFunctionBillingRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: states.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: StepInvokeLambda
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: lambda:InvokeFunction
+                Resource: !GetAtt BillingEmailLambda.Arn
+
+  ### Step Function ###
+  BillingStateMachine:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      StateMachineName: MaquinaDeCobrancaMensal
+      RoleArn: !GetAtt StepFunctionRole.Arn
+      DefinitionString: 
+        !Sub |
+          {
+            "Comment": "Fluxo de envio de faturas por e-mail",
+            "StartAt": "EnviarEmails",
+            "States": {
+              "EnviarEmails": {
+                "Type": "Task",
+                "Resource": "arn:aws:states:::lambda:invoke",
+                "Parameters": {
+                  "Payload.$": "$",
+                  "FunctionName": "${BillingEmailLambda.Arn}"
+                },
+                "End": true
+              }
+            }
+          }
+
+  ### IAM Role para o EventBridge invocar a Step Function ###
+  EventBridgeInvokeStepFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: EventBridgeInvokeStepFunctionRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: InvokeStepFunctionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - states:StartExecution
+                Resource: !Ref BillingStateMachine
+
+  ### EventBridge Rule ###
+  MonthlyScheduleRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: RegraCobrancaMensal
+      Description: Dispara o fluxo de cobrança todo dia 10 do mês
+      ScheduleExpression: cron(0 12 10 * ? *)
+      State: ENABLED
+      Targets:
+        - Arn: !Ref BillingStateMachine
+          Id: StepFunctionTarget
+          RoleArn: !GetAtt EventBridgeInvokeStepFunctionRole.Arn
+
+Outputs:
+  LambdaFunctionName:
+    Description: Nome da função Lambda
+    Value: !Ref BillingEmailLambda
+
+  StepFunctionName:
+    Description: Nome da máquina de estados
+    Value: !Ref BillingStateMachine
+
+  EventBridgeRuleName:
+    Description: Nome da regra de agendamento
+    Value: !Ref MonthlyScheduleRule
+
+  DynamoDBTableName:
+    Description: Nome da tabela DynamoDB usada para os dados dos clientes
+    Value: !Ref ClientesFaturasTable
