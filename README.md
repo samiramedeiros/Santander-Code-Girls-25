@@ -27,6 +27,7 @@ Olá! Eu sou **Samira Medeiros**, graduada em **Análise e Desenvolvimento de Si
 - [**Modules**](https://github.com/samiramedeiros/Santander-Code-Girls-25/blob/main/Modules/Inicio.md) — Curso organizado por módulos  
 - [**Projects**](https://github.com/samiramedeiros/Santander-Code-Girls-25/blob/main/projects) — Desafios de projetos
 - [**Certificates**](https://github.com/samiramedeiros/Santander-Code-Girls-25/blob/main/certificates) — Meus certificados
+- [**Conclusão**](https://github.com/samiramedeiros/Santander-Code-Girls-25/blob/main/Conclusão) — Conclusão
 
 ---
 
